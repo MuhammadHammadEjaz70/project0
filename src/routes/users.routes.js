@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { accessRefreshToken, loginUser, logoutUser, registerUser } from '../controllers/users.controller.js';
+import { accessRefreshToken, changeCurrentPassword, getCurrentUser, loginUser, logoutUser, registerUser, updateAccountDetails, updateUserAvatar, updateUserCoverImage } from '../controllers/users.controller.js';
 import { upload } from "../middlewares/multer.middleware.js"
 import { verifyJWT } from '../middlewares/auth.middleware.js';
 
@@ -9,19 +9,24 @@ const router = Router()
 router.route("/register").post(
     upload.fields(
         [{
-        name: "avatar",
-        maxCount: 1,
-    },
+            name: "avatar",
+            maxCount: 1,
+        },
         {
             name: "coverImage",
             maxCount: 1,
         }])
-    ,registerUser)
+    , registerUser)
 
- router.route("/login").post(loginUser)  
+router.route("/login").post(loginUser)
 
- //secured routes 
- router.route("/logout").post(verifyJWT,logoutUser)   
- router.route("/refreshToken").post(accessRefreshToken)   
+//secured routes 
+router.route("/logout").post(verifyJWT, logoutUser)
+router.route("/refreshToken").post(accessRefreshToken)
+router.route("/currentUser").get(verifyJWT, getCurrentUser)
+router.route("/changeCurrentPassword").post(verifyJWT, changeCurrentPassword)
+router.route("/updateUser").patch(verifyJWT, updateAccountDetails)
+router.route("/updateUserAvatar").patch(verifyJWT, upload.single("avatar"), updateUserAvatar)
+router.route("/updateUserCoverImage").patch(verifyJWT, upload.single('coverImage'), updateUserCoverImage)
 
 export default router;
