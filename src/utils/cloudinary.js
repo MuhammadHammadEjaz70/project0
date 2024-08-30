@@ -1,4 +1,5 @@
 import { v2 as cloudinary } from 'cloudinary';
+
 import fs from 'fs'
 
 // Configuration
@@ -31,8 +32,21 @@ const uploadOnCloudinary = async (localFilePath) => {
     }
 }
 
+const deleteFromCloudinary=async(localFilePath)=>{
+    const parts = localFilePath.split('/');
+    const publicIdWithExtension = parts[parts.length - 1];
+    const publicId = publicIdWithExtension.split('.')[0];
+    try {
+        if(!localFilePath) return null;
+        const res = await cloudinary.uploader.destroy(publicId)
+        console.log(res)
+    } catch (error) {
+        console.log(error)
+    }
+}
 
-export {uploadOnCloudinary}
+
+export {uploadOnCloudinary,deleteFromCloudinary}
 
 // (async function () {
 
