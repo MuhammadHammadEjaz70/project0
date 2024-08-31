@@ -3,7 +3,8 @@ import mongoose, {Schema} from "mongoose";
 
 const playListSchema=new Schema({
     name:{
-        type:String
+        type:String,
+        required:true
     },
     owner:{
         type:Schema.Types.ObjectId,
