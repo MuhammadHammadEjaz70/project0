@@ -22,7 +22,27 @@ export const createTweet = asyncHandler(async (req, res) => {
             new ApiResponse(200, tweet, "Tweet created succesfully")
         )
 })
+
+export const listSingleTweet = asyncHandler(async (req, res) => {
+    const {tweetId}=req.params;
+    const singleTweet = await Tweet.findById(tweetId);
+    if (!singleTweet) {
+        throw new ApiError(404, singleTweet, "No tweet Found")
+    }
+    return res.status(200).json(new ApiResponse(200, singleTweet, "Succesfull"))
+
+})
+// todo : pagination
 export const listAllTweets = asyncHandler(async (req, res) => {
+    const allTweets = await Tweet.find();
+    if (!allTweets) {
+        throw new ApiError(404, allTweets, "No tweets Found")
+    }
+    return res.status(200).json(new ApiResponse(200, allTweets, "All tweets"))
+
+})
+// todo : pagination
+export const listAllUserTweets = asyncHandler(async (req, res) => {
     const { userId } = req.params
     const allTweets = await Tweet.find({ owner: userId });
     if (!allTweets) {

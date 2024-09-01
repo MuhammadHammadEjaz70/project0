@@ -16,7 +16,6 @@ const uploadOnCloudinary = async (localFilePath) => {
         const res = await cloudinary.uploader.upload(localFilePath, {
             resource_type: "auto"
         })
-
         //file has been uploaded successfully
         // console.log("File is uploaded on cloudinary ", res.url);
         // console.log("File is uploaded on cloudinary ", res);
@@ -25,28 +24,44 @@ const uploadOnCloudinary = async (localFilePath) => {
 
 
     } catch (error) {
-        fs.unlinkSync(localFilePath) 
+        fs.unlinkSync(localFilePath)
         //remove the locally saved temporariy file as the upload operation got failed
-        console.log(error); 
-        return null;  
+        console.log(error);
+        return null;
     }
 }
 
-const deleteFromCloudinary=async(localFilePath)=>{
+const deleteFromCloudinary = async (localFilePath) => {
     const parts = localFilePath.split('/');
     const publicIdWithExtension = parts[parts.length - 1];
     const publicId = publicIdWithExtension.split('.')[0];
     try {
-        if(!localFilePath) return null;
-        const res = await cloudinary.uploader.destroy(publicId)
-        console.log(res)
+        if (!publicId) {
+            return null;
+        }
+        await cloudinary.uploader.destroy(publicId)
+
     } catch (error) {
         console.log(error)
     }
 }
 
+export const deleteVideoFromCloudinary = async (localFilePath) => {
+    const parts = localFilePath.split('/');
+    const publicIdWithExtension = parts[parts.length - 1];
+    const publicId = publicIdWithExtension.split('.')[0];
+    try {
+        if (!publicId) {
+            return null;
+        }
+        await cloudinary.uploader.destroy(publicId, { resource_type: 'video', })
 
-export {uploadOnCloudinary,deleteFromCloudinary}
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export { uploadOnCloudinary, deleteFromCloudinary }
 
 // (async function () {
 
@@ -67,4 +82,4 @@ export {uploadOnCloudinary,deleteFromCloudinary}
 //     });
 
 //     console.log(autoCropUrl);
-// })();
+// })();s
