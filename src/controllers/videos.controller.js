@@ -4,6 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { deleteFromCloudinary, deleteVideoFromCloudinary, uploadOnCloudinary } from "../utils/cloudinary.js";
 
+// todo searching and pagination
 export const listAllVideos = asyncHandler(async (req, res) => {
     const videos = await Video.find()
     if (!videos) throw new ApiError(400, {}, "No Vidoes found")

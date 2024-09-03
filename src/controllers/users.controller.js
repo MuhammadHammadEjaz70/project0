@@ -220,7 +220,7 @@ export const updateAccountDetails = asyncHandler(async (req, res) => {
       email
     }
   }, { new: true }).select("-password -refreshToken");
-  return res.status(200).json(new ApiResponse(200, user, "User information updated succesfullt"))
+  return res.status(200).json(new ApiResponse(200, user, "User information updated succesfull"))
 })
 
 export const updateUserAvatar = asyncHandler(async (req, res) => {

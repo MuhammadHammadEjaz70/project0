@@ -24,7 +24,7 @@ export const createTweet = asyncHandler(async (req, res) => {
 })
 
 export const listSingleTweet = asyncHandler(async (req, res) => {
-    const {tweetId}=req.params;
+    const { tweetId } = req.params;
     const singleTweet = await Tweet.findById(tweetId);
     if (!singleTweet) {
         throw new ApiError(404, singleTweet, "No tweet Found")
@@ -51,23 +51,37 @@ export const listAllUserTweets = asyncHandler(async (req, res) => {
     return res.status(200).json(new ApiResponse(200, allTweets, "All tweets"))
 
 })
+
 export const editTweet = asyncHandler(async (req, res) => {
     const { tweetId } = req.params;
     const { content } = req.body;
-    console.log({content})
-    if(!content) throw new ApiError(400,"Content is missing");
+    const userId = req.user._id;
+
+    const tweet = await Tweet.findById(tweetId)
+    if (!tweet) throw new ApiError(404, "No tweet found");
+
+    if (tweet.owner.toString() !== userId.toString()) throw new ApiError(403, "Forbidden")
+
+    if (!content) throw new ApiError(400, "Content is missing");
     const updatedTweet = await Tweet.findByIdAndUpdate(tweetId, {
-        $set:{
+        $set: {
             content
         }
     }, { new: true })
-    console.log({updatedTweet})
-    return res.status(200).json(new ApiResponse (200,updatedTweet,"Tweet Updated Succesfully"))
+    return res.status(200).json(new ApiResponse(200, updatedTweet, "Tweet Updated Succesfully"))
 
 })
+
 export const deleteTweet = asyncHandler(async (req, res) => {
-const {tweetId}=req.params;
-await Tweet.findByIdAndDelete(tweetId)
-return res.status(200).json(new ApiResponse (200,{},"Tweet Deleted Succesfully"))
+    const { tweetId } = req.params;
+    const userId=req.user._id;
+
+    const tweet=await Tweet.findById(tweetId);
+    if(!tweet) throw new ApiError(404,"Tweet not found");
+     
+    if(tweet.owner.toString() !== userId.toString()) throw new ApiError(403,"Forbidden");
+
+    await Tweet.findByIdAndDelete(tweetId)
+    return res.status(200).json(new ApiResponse(200, {}, "Tweet Deleted Succesfully"))
 
 })
