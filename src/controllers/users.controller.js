@@ -227,7 +227,7 @@ export const updateUserAvatar = asyncHandler(async (req, res) => {
   const avatarlocalPath = req.file?.path;
   const user= await User.findById(req.user?._id);
   const oldAvatar=user.avatar;
-  console.log({oldAvatar})
+
 
   if (!avatarlocalPath) {
     throw new ApiError(400, "Avatar file is missing")

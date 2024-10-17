@@ -10,7 +10,7 @@ import {
     updateVideoFile,
     updateVideoThumbnail,
     updateVideo,
-    getVideoById
+    listSigleVideo
 } from "../controllers/videos.controller.js";
 
 
@@ -33,8 +33,8 @@ router.route("/update-video-file/:videoId").patch(upload.single("videoFile"),upd
 router.route("/update-video-thumbnail/:videoId").patch(upload.single("thumbnail"),updateVideoThumbnail)
 router.route("/update-video/:videoId").patch(updateVideo)
 router.route("/all-videos").get(listAllVideos)
+router.route("/:videoId").get(listSigleVideo)
 router.route("/all-user-videos/:userId").get(listAllUserVideos) 
-router.route("/getVideo/:videoId").get(getVideoById) 
 
 
 export default router;
