@@ -31,4 +31,8 @@ app.use("/api/v1/playlists",playlistRouter)
 app.use("/api/v1/tweets",tweetRouter)
 app.use("/api/v1/subcriptions",subscriptionRouter)
 
+app.get('/hello', (req, res) => {
+    res.send('Hello!');
+  });
+
 export {app};
