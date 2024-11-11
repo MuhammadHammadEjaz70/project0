@@ -14,7 +14,7 @@ connectDB().then(() => {
         console.log("Error: App is not able to talk to DB", err)
         throw err;
     })
-    app.listen(process.env.PORT || 8000, () => {
+     app.listen(process.env.PORT || 8000, () => {
         console.log(`Server is listeing at port ${process.env.PORT}`)
     })
 })
